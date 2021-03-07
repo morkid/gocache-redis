@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	cache "github.com/morkid/gocache-redis/v4"
-	"gopkg.in/redis.v4"
+	cache "github.com/morkid/gocache-redis/v5"
+	"gopkg.in/redis.v5"
 )
 
 func TestCache(t *testing.T) {

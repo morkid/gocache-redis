@@ -1,6 +1,4 @@
 github.com/morkid/gocache v1.0.0 h1:hTnU78Dqp2vs9al5vJC2TmmMF+Hm3nDH1AgRBjSXE+0=
 github.com/morkid/gocache v1.0.0/go.mod h1:xK+hmoEMjYffIBvjn7DE8WfSd/rF5Kz/G9f20OliMJY=
-gopkg.in/bsm/ratelimit.v1 v1.0.0-20160220154919-db14e161995a h1:stTHdEoWg1pQ8riaP5ROrjS6zy6wewH/Q2iwnLCQUXY=
-gopkg.in/bsm/ratelimit.v1 v1.0.0-20160220154919-db14e161995a/go.mod h1:KF9sEfUPAXdG8Oev9e99iLGnl2uJMjc5B+4y3O7x610=
-gopkg.in/redis.v4 v4.2.4 h1:y3XbwQAiHwgNLUng56mgWYK39vsPqo8sT84XTEcxjr0=
-gopkg.in/redis.v4 v4.2.4/go.mod h1:8KREHdypkCEojGKQcjMqAODMICIVwZAONWq8RowTITA=
+gopkg.in/redis.v5 v5.2.9 h1:MNZYOLPomQzZMfpN3ZtD1uyJ2IDonTTlxYiV/pEApiw=
+gopkg.in/redis.v5 v5.2.9/go.mod h1:6gtv0/+A4iM08kdRfocWYB3bLX2tebpNtfKlFT6H4mY=
