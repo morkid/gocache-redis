@@ -34,7 +34,7 @@ func TestCache(t *testing.T) {
 		}
 		adapter.Clear("foo")
 		if adapter.IsValid("foo") {
-			t.Error("Failed to remove key foo")
+			t.Error("Failed to remove cache with key foo")
 		}
 	}
 
