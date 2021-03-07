@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/morkid/gocache"
-	"gopkg.in/redis.v3"
+	"gopkg.in/redis.v4"
 )
 
 // RedisCacheConfig base config for redis cache adapter
@@ -81,13 +81,13 @@ func (r redisCache) ClearPrefix(keyPrefix string) error {
 	}
 
 	if nil != r.ClusterClient {
-		_, values, err := r.ClusterClient.Scan(0, keyPrefix+"*", 0).Result()
+		values, _, err := r.ClusterClient.Scan(0, keyPrefix+"*", 0).Result()
 		if nil == err {
 			return r.ClusterClient.Del(values...).Err()
 		}
 	}
 
-	_, values, err := r.Client.Scan(0, keyPrefix+"*", 0).Result()
+	values, _, err := r.Client.Scan(0, keyPrefix+"*", 0).Result()
 	if nil == err {
 		return r.Client.Del(values...).Err()
 	}
@@ -101,13 +101,13 @@ func (r redisCache) ClearAll() error {
 	}
 
 	if nil != r.ClusterClient {
-		_, values, err := r.ClusterClient.Scan(0, "*", 0).Result()
+		values, _, err := r.ClusterClient.Scan(0, "*", 0).Result()
 		if nil == err {
 			return r.ClusterClient.Del(values...).Err()
 		}
 	}
 
-	_, values, err := r.Client.Scan(0, "*", 0).Result()
+	values, _, err := r.Client.Scan(0, "*", 0).Result()
 	if nil == err {
 		return r.Client.Del(values...).Err()
 	}
