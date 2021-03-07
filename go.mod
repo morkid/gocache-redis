@@ -1,8 +1,8 @@
-module github.com/morkid/gocache-redis/v5
+module github.com/morkid/gocache-redis/v7
 
 go 1.15
 
 require (
+	github.com/go-redis/redis/v7 v7.4.0
 	github.com/morkid/gocache v1.0.0
-	gopkg.in/redis.v5 v5.2.9
 )

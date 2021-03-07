@@ -4,8 +4,8 @@ import (
 	"errors"
 	"time"
 
+	"github.com/go-redis/redis/v7"
 	"github.com/morkid/gocache"
-	"gopkg.in/redis.v5"
 )
 
 // RedisCacheConfig base config for redis cache adapter

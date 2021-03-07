@@ -1,17 +1,17 @@
 # cache redis adapter
-[![Go Reference](https://pkg.go.dev/badge/github.com/morkid/gocache-redis/v5.svg)](https://pkg.go.dev/github.com/morkid/gocache-redis/v5)
+[![Go Reference](https://pkg.go.dev/badge/github.com/morkid/gocache-redis/v7.svg)](https://pkg.go.dev/github.com/morkid/gocache-redis/v7)
 [![Go](https://github.com/morkid/gocache-redis/actions/workflows/go.yml/badge.svg)](https://github.com/morkid/gocache-redis/actions/workflows/go.yml)
 [![Build Status](https://travis-ci.com/morkid/gocache-redis.svg?branch=master)](https://travis-ci.com/morkid/gocache-redis)
-[![Go Report Card](https://goreportcard.com/badge/github.com/morkid/gocache-redis/v5)](https://goreportcard.com/report/github.com/morkid/gocache-redis/v5)
+[![Go Report Card](https://goreportcard.com/badge/github.com/morkid/gocache-redis/v7)](https://goreportcard.com/report/github.com/morkid/gocache-redis/v7)
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/morkid/gocache-redis)](https://github.com/morkid/gocache-redis/releases)
 
 This library is created by implementing [gocache](https://github.com/morkid/gocache) 
-and require [redis](https://github.com/go-redis/redis) v5.
+and require [redis](https://github.com/go-redis/redis) v7.
 
 ## Installation
 
 ```bash
-go get -d github.com/morkid/gocache-redis/v5
+go get -d github.com/morkid/gocache-redis/v7
 ```
 
 Available versions:
@@ -29,8 +29,8 @@ package main
 import (
     "time"
     "fmt"
-    cache "github.com/morkid/gocache-redis/v5"
-    "gopkg.in/redis.v5"
+    cache "github.com/morkid/gocache-redis/v7"
+    "https://github.com/go-redis/redis/tree/v7"
 )
 
 func main() {
