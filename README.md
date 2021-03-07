@@ -30,7 +30,7 @@ import (
     "time"
     "fmt"
     cache "github.com/morkid/gocache-redis/v8"
-    "https://github.com/go-redis/redis/tree/v8"
+    "github.com/go-redis/redis/v8"
 )
 
 func main() {
