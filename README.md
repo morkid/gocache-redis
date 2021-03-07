@@ -14,6 +14,14 @@ and require [redis](https://github.com/go-redis/redis) v4.
 go get -d github.com/morkid/gocache-redis/v4
 ```
 
+Available versions:
+- [github.com/morkid/gocache-redis/v8](https://github.com/morkid/gocache-redis/tree/v8) for [redis client v8](https://github.com/go-redis/redis)
+- [github.com/morkid/gocache-redis/v7](https://github.com/morkid/gocache-redis/tree/v7) for [redis client v7](https://github.com/go-redis/redis/tree/v7)
+- [github.com/morkid/gocache-redis/v5](https://github.com/morkid/gocache-redis/tree/v5) for [redis client v5](https://github.com/go-redis/redis/tree/v5)
+- [github.com/morkid/gocache-redis/v4](https://github.com/morkid/gocache-redis/tree/v4) for [redis client v4](https://github.com/go-redis/redis/tree/v4)
+- [github.com/morkid/gocache-redis/v3](https://github.com/morkid/gocache-redis/tree/v3) for [redis client v3](https://github.com/morkid/gocache-redis/tree/v3)
+
+
 ## Example usage
 ```go
 package main
