@@ -1,6 +1,7 @@
 package cache_test
 
 import (
+	"log"
 	"testing"
 	"time"
 
@@ -66,4 +67,22 @@ func TestCache(t *testing.T) {
 	if value, _ := adapter.Get("kitty"); value != "" {
 		t.Error("Failed to remove all keys")
 	}
+}
+
+func TestDelete(t *testing.T) {
+	client := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "",
+		DB:       0,
+	})
+
+	config := cache.RedisCacheConfig{
+		Client:    client,
+		ExpiresIn: 10 * time.Second,
+	}
+
+	adapter := *cache.NewRedisCache(config)
+	err := adapter.ClearPrefix("UT")
+	log.Println(err)
+	time.Sleep(5 * time.Second)
 }

@@ -80,15 +80,23 @@ func (r redisCache) ClearPrefix(keyPrefix string) error {
 		return r.noClient()
 	}
 
+	var dbSize int64 = r.Client.DbSize().Val()
+
 	if nil != r.ClusterClient {
-		_, values, err := r.ClusterClient.Scan(0, keyPrefix+"*", 0).Result()
+		_, values, err := r.ClusterClient.Scan(0, keyPrefix+"*", dbSize).Result()
 		if nil == err {
+			if len(values) < 1 {
+				return nil
+			}
 			return r.ClusterClient.Del(values...).Err()
 		}
 	}
 
-	_, values, err := r.Client.Scan(0, keyPrefix+"*", 0).Result()
+	_, values, err := r.Client.Scan(0, keyPrefix+"*", dbSize).Result()
 	if nil == err {
+		if len(values) < 1 {
+			return nil
+		}
 		return r.Client.Del(values...).Err()
 	}
 
@@ -101,18 +109,10 @@ func (r redisCache) ClearAll() error {
 	}
 
 	if nil != r.ClusterClient {
-		_, values, err := r.ClusterClient.Scan(0, "*", 0).Result()
-		if nil == err {
-			return r.ClusterClient.Del(values...).Err()
-		}
+		return r.ClusterClient.FlushDb().Err()
 	}
 
-	_, values, err := r.Client.Scan(0, "*", 0).Result()
-	if nil == err {
-		return r.Client.Del(values...).Err()
-	}
-
-	return err
+	return r.Client.FlushDb().Err()
 }
 
 func (r redisCache) noClient() error {
