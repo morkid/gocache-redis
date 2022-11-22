@@ -15,6 +15,7 @@ go get -d github.com/morkid/gocache-redis/v8
 ```
 
 Available versions:
+- github.com/morkid/gocache-redis/v8 (on progress)
 - [github.com/morkid/gocache-redis/v8](https://github.com/morkid/gocache-redis/tree/v8) for [redis client v8](https://github.com/go-redis/redis)
 - [github.com/morkid/gocache-redis/v7](https://github.com/morkid/gocache-redis/tree/v7) for [redis client v7](https://github.com/go-redis/redis/tree/v7)
 - [github.com/morkid/gocache-redis/v5](https://github.com/morkid/gocache-redis/tree/v5) for [redis client v5](https://github.com/go-redis/redis/tree/v5)
