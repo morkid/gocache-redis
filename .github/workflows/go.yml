@@ -20,7 +20,7 @@ jobs:
     # All versions in this repo use miniredis for offline testing, so no
     # Redis service container is required.
     #
-    # Legacy versions (v3, v4, v5) skip go mod tidy because Go 1.24+
+    # Legacy versions (v3, v4, v5, v7) skip go mod tidy because Go 1.24+
     # auto-bumps their go directive to the current toolchain version.
     # They are pinned at go 1.16 (matching the parent gocache library)
     # and only need go test to verify correctness.
@@ -44,7 +44,7 @@ jobs:
     - name: Test (${{ matrix.dir }}, offline via miniredis)
       working-directory: ${{ matrix.dir }}
       run: |
-        if [ "${{ matrix.dir }}" = "v3" ] || [ "${{ matrix.dir }}" = "v4" ] || [ "${{ matrix.dir }}" = "v5" ]; then
+        if [ "${{ matrix.dir }}" = "v3" ] || [ "${{ matrix.dir }}" = "v4" ] || [ "${{ matrix.dir }}" = "v5" ] || [ "${{ matrix.dir }}" = "v7" ]; then
           go test -v ./...
         else
           go mod tidy && go test -v ./...

@@ -1,11 +1,10 @@
-package cache_test
+package cache
 
 import (
 	"testing"
 	"time"
 
 	"github.com/alicebob/miniredis/v2"
-	cache "github.com/morkid/gocache-redis/v4"
 	redis "gopkg.in/redis.v4"
 )
 
@@ -35,7 +34,7 @@ func deadClusterClient() *redis.ClusterClient {
 }
 
 func TestCache_NoClient(t *testing.T) {
-	adapter := cache.NewRedisCache(cache.RedisCacheConfig{
+	adapter := NewRedisCache(RedisCacheConfig{
 		ExpiresIn: 10 * time.Second,
 	})
 
@@ -62,7 +61,7 @@ func TestCache_NoClient(t *testing.T) {
 func TestCache_DefaultExpiresIn(t *testing.T) {
 	client := setupMiniredis(t)
 
-	adapter := cache.NewRedisCache(cache.RedisCacheConfig{
+	adapter := NewRedisCache(RedisCacheConfig{
 		Client: client,
 	})
 
@@ -80,7 +79,7 @@ func TestCache_DefaultExpiresIn(t *testing.T) {
 func TestCache_ClientSuccess(t *testing.T) {
 	client := setupMiniredis(t)
 
-	adapter := cache.NewRedisCache(cache.RedisCacheConfig{
+	adapter := NewRedisCache(RedisCacheConfig{
 		Client:    client,
 		ExpiresIn: 10 * time.Second,
 	})
@@ -123,7 +122,7 @@ func TestCache_ClientSuccess(t *testing.T) {
 func TestCache_ClientClearPrefix_NoMatches(t *testing.T) {
 	client := setupMiniredis(t)
 
-	adapter := cache.NewRedisCache(cache.RedisCacheConfig{
+	adapter := NewRedisCache(RedisCacheConfig{
 		Client:    client,
 		ExpiresIn: 10 * time.Second,
 	})
@@ -147,7 +146,7 @@ func TestCache_ClientErrorsAfterClose(t *testing.T) {
 
 	client := redis.NewClient(&redis.Options{Addr: mr.Addr()})
 
-	adapter := cache.NewRedisCache(cache.RedisCacheConfig{
+	adapter := NewRedisCache(RedisCacheConfig{
 		Client:    client,
 		ExpiresIn: 10 * time.Second,
 	})
@@ -184,7 +183,7 @@ func TestCache_ClusterErrorsAfterClose(t *testing.T) {
 	client := redis.NewClient(&redis.Options{Addr: mr.Addr()})
 	clusterCli := deadClusterClient()
 
-	adapter := cache.NewRedisCache(cache.RedisCacheConfig{
+	adapter := NewRedisCache(RedisCacheConfig{
 		Client:        client,
 		ClusterClient: clusterCli,
 		ExpiresIn:     10 * time.Second,

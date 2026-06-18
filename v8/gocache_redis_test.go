@@ -1,4 +1,4 @@
-package cache_test
+package cache
 
 import (
 	"context"
@@ -7,7 +7,6 @@ import (
 
 	"github.com/alicebob/miniredis/v2"
 	"github.com/go-redis/redis/v8"
-	cache "github.com/morkid/gocache-redis/v8"
 )
 
 func setupMiniredis(t *testing.T) (*miniredis.Miniredis, *redis.Client) {
@@ -56,7 +55,7 @@ func setupClusterClient(t *testing.T) (*miniredis.Miniredis, *redis.ClusterClien
 func TestCache_SetAndGet(t *testing.T) {
 	_, client := setupMiniredis(t)
 
-	adapter := cache.NewRedisCache(cache.RedisCacheConfig{
+	adapter := NewRedisCache(RedisCacheConfig{
 		Client:    client,
 		ExpiresIn: 10 * time.Second,
 	})
@@ -78,7 +77,7 @@ func TestCache_SetAndGet(t *testing.T) {
 func TestCache_GetNonExistent(t *testing.T) {
 	_, client := setupMiniredis(t)
 
-	adapter := cache.NewRedisCache(cache.RedisCacheConfig{
+	adapter := NewRedisCache(RedisCacheConfig{
 		Client:    client,
 		ExpiresIn: 10 * time.Second,
 	})
@@ -92,7 +91,7 @@ func TestCache_GetNonExistent(t *testing.T) {
 func TestCache_IsValid(t *testing.T) {
 	_, client := setupMiniredis(t)
 
-	adapter := cache.NewRedisCache(cache.RedisCacheConfig{
+	adapter := NewRedisCache(RedisCacheConfig{
 		Client:    client,
 		ExpiresIn: 10 * time.Second,
 	})
@@ -110,7 +109,7 @@ func TestCache_IsValid(t *testing.T) {
 func TestCache_Clear(t *testing.T) {
 	_, client := setupMiniredis(t)
 
-	adapter := cache.NewRedisCache(cache.RedisCacheConfig{
+	adapter := NewRedisCache(RedisCacheConfig{
 		Client:    client,
 		ExpiresIn: 10 * time.Second,
 	})
@@ -126,7 +125,7 @@ func TestCache_Clear(t *testing.T) {
 func TestCache_ClearPrefix(t *testing.T) {
 	_, client := setupMiniredis(t)
 
-	adapter := cache.NewRedisCache(cache.RedisCacheConfig{
+	adapter := NewRedisCache(RedisCacheConfig{
 		Client:    client,
 		ExpiresIn: 10 * time.Second,
 	})
@@ -157,7 +156,7 @@ func TestCache_ClearPrefix(t *testing.T) {
 func TestCache_ClearPrefix_NoMatches(t *testing.T) {
 	_, client := setupMiniredis(t)
 
-	adapter := cache.NewRedisCache(cache.RedisCacheConfig{
+	adapter := NewRedisCache(RedisCacheConfig{
 		Client:    client,
 		ExpiresIn: 10 * time.Second,
 	})
@@ -176,7 +175,7 @@ func TestCache_ClearPrefix_NoMatches(t *testing.T) {
 func TestCache_ClearAll(t *testing.T) {
 	_, client := setupMiniredis(t)
 
-	adapter := cache.NewRedisCache(cache.RedisCacheConfig{
+	adapter := NewRedisCache(RedisCacheConfig{
 		Client:    client,
 		ExpiresIn: 10 * time.Second,
 	})
@@ -197,7 +196,7 @@ func TestCache_ClearAll(t *testing.T) {
 func TestCache_MultipleKeys(t *testing.T) {
 	_, client := setupMiniredis(t)
 
-	adapter := cache.NewRedisCache(cache.RedisCacheConfig{
+	adapter := NewRedisCache(RedisCacheConfig{
 		Client:    client,
 		ExpiresIn: 10 * time.Second,
 	})
@@ -216,7 +215,7 @@ func TestCache_MultipleKeys(t *testing.T) {
 }
 
 func TestCache_NoClient(t *testing.T) {
-	adapter := cache.NewRedisCache(cache.RedisCacheConfig{
+	adapter := NewRedisCache(RedisCacheConfig{
 		ExpiresIn: 10 * time.Second,
 	})
 
@@ -255,7 +254,7 @@ func TestCache_NoClient(t *testing.T) {
 func TestCache_DefaultExpiresIn(t *testing.T) {
 	_, client := setupMiniredis(t)
 
-	adapter := cache.NewRedisCache(cache.RedisCacheConfig{
+	adapter := NewRedisCache(RedisCacheConfig{
 		Client: client,
 		// ExpiresIn left as zero to trigger default branch.
 	})
@@ -276,7 +275,7 @@ func TestCache_DefaultExpiresIn(t *testing.T) {
 func TestCache_DefaultContext(t *testing.T) {
 	_, client := setupMiniredis(t)
 
-	adapter := cache.NewRedisCache(cache.RedisCacheConfig{
+	adapter := NewRedisCache(RedisCacheConfig{
 		Client:    client,
 		ExpiresIn: 10 * time.Second,
 		// Context left nil to trigger default branch.
@@ -296,7 +295,7 @@ func TestCache_DefaultContext(t *testing.T) {
 func TestCache_ClientErrorsAfterClose(t *testing.T) {
 	mr, client := setupMiniredis(t)
 
-	adapter := cache.NewRedisCache(cache.RedisCacheConfig{
+	adapter := NewRedisCache(RedisCacheConfig{
 		Client:    client,
 		ExpiresIn: 10 * time.Second,
 	})
@@ -328,7 +327,7 @@ func TestCache_ClientErrorsAfterClose(t *testing.T) {
 func TestCache_ClusterSuccess(t *testing.T) {
 	mr, clusterCli := setupClusterClient(t)
 
-	adapter := cache.NewRedisCache(cache.RedisCacheConfig{
+	adapter := NewRedisCache(RedisCacheConfig{
 		ClusterClient: clusterCli,
 		ExpiresIn:     10 * time.Second,
 	})
@@ -397,7 +396,7 @@ func TestCache_ClusterSuccess(t *testing.T) {
 func TestCache_ClusterErrorsAfterClose(t *testing.T) {
 	_, clusterCli := setupClusterClient(t)
 
-	adapter := cache.NewRedisCache(cache.RedisCacheConfig{
+	adapter := NewRedisCache(RedisCacheConfig{
 		ClusterClient: clusterCli,
 		ExpiresIn:     10 * time.Second,
 	})
@@ -430,7 +429,7 @@ func TestCache_ClusterErrorsAfterClose(t *testing.T) {
 func TestCache_ExpiredKey(t *testing.T) {
 	mr, client := setupMiniredis(t)
 
-	adapter := cache.NewRedisCache(cache.RedisCacheConfig{
+	adapter := NewRedisCache(RedisCacheConfig{
 		Client:    client,
 		ExpiresIn: 1 * time.Hour,
 	})

@@ -65,8 +65,8 @@ This repository uses a subdirectory-per-version structure. All versions live on 
 
 ### Prerequisites
 
-- Go 1.16+
-- [gocache](https://github.com/morkid/gocache) (Pulled from pkg.go.dev as v1.0.3)
+- Go 1.21+ (for workspace development; individual modules require Go 1.16+)
+- [gocache](https://github.com/morkid/gocache) v1.0.3 (imported automatically as a dependency)
 
 ## License
 
