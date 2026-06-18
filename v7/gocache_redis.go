@@ -16,18 +16,16 @@ type RedisCacheConfig struct {
 }
 
 // NewRedisCache func
-func NewRedisCache(config RedisCacheConfig) *gocache.AdapterInterface {
+func NewRedisCache(config RedisCacheConfig) gocache.AdapterInterface {
 	if config.ExpiresIn <= 0 {
 		config.ExpiresIn = 3600 * time.Second
 	}
 
-	var adapter gocache.AdapterInterface = &redisCache{
+	return &redisCache{
 		Client:        config.Client,
 		ClusterClient: config.ClusterClient,
 		ExpiresIn:     config.ExpiresIn,
 	}
-
-	return &adapter
 }
 
 type redisCache struct {
@@ -36,7 +34,7 @@ type redisCache struct {
 	ExpiresIn     time.Duration
 }
 
-func (r redisCache) Set(key string, value string) error {
+func (r *redisCache) Set(key string, value string) error {
 	if nil == r.Client && nil == r.ClusterClient {
 		return r.noClient()
 	}
@@ -46,14 +44,14 @@ func (r redisCache) Set(key string, value string) error {
 	return nil
 }
 
-func (r redisCache) Get(key string) (string, error) {
+func (r *redisCache) Get(key string) (string, error) {
 	if nil == r.Client && nil == r.ClusterClient {
 		return "", r.noClient()
 	}
 	return r.Client.Get(key).Result()
 }
 
-func (r redisCache) IsValid(key string) bool {
+func (r *redisCache) IsValid(key string) bool {
 	if nil == r.Client && nil == r.ClusterClient {
 		return false
 	}
@@ -63,7 +61,7 @@ func (r redisCache) IsValid(key string) bool {
 	return false
 }
 
-func (r redisCache) Clear(key string) error {
+func (r *redisCache) Clear(key string) error {
 	if nil == r.Client && nil == r.ClusterClient {
 		return r.noClient()
 	}
@@ -75,7 +73,7 @@ func (r redisCache) Clear(key string) error {
 	return r.Client.Del(key).Err()
 }
 
-func (r redisCache) ClearPrefix(keyPrefix string) error {
+func (r *redisCache) ClearPrefix(keyPrefix string) error {
 	if nil == r.Client && nil == r.ClusterClient {
 		return r.noClient()
 	}
@@ -97,7 +95,7 @@ func (r redisCache) ClearPrefix(keyPrefix string) error {
 	return iter.Err()
 }
 
-func (r redisCache) ClearAll() error {
+func (r *redisCache) ClearAll() error {
 	if nil == r.Client && nil == r.ClusterClient {
 		return r.noClient()
 	}
@@ -109,6 +107,6 @@ func (r redisCache) ClearAll() error {
 	return r.Client.FlushDB().Err()
 }
 
-func (r redisCache) noClient() error {
+func (r *redisCache) noClient() error {
 	return errors.New("Redis client is not defined")
 }

@@ -26,7 +26,7 @@ import (
 func main() {
     client := redis.NewClient(&redis.Options{Addr: "localhost:6379"})
 
-    adapter := *cache.NewRedisCache(cache.RedisCacheConfig{
+    adapter := cache.NewRedisCache(cache.RedisCacheConfig{
         Client:    client,
         ExpiresIn: 10 * time.Second,
     })
