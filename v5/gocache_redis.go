@@ -1,12 +1,11 @@
 package cache
 
 import (
-	"context"
 	"errors"
 	"time"
 
-	"github.com/go-redis/redis/v8"
 	"github.com/morkid/gocache"
+	"gopkg.in/redis.v5"
 )
 
 // RedisCacheConfig base config for redis cache adapter
@@ -26,7 +25,6 @@ func NewRedisCache(config RedisCacheConfig) *gocache.AdapterInterface {
 		Client:        config.Client,
 		ClusterClient: config.ClusterClient,
 		ExpiresIn:     config.ExpiresIn,
-		Context:       context.Background(),
 	}
 
 	return &adapter
@@ -36,14 +34,13 @@ type redisCache struct {
 	Client        *redis.Client
 	ClusterClient *redis.ClusterClient
 	ExpiresIn     time.Duration
-	Context       context.Context
 }
 
 func (r redisCache) Set(key string, value string) error {
 	if nil == r.Client && nil == r.ClusterClient {
 		return r.noClient()
 	}
-	if err := r.Client.Set(r.Context, key, value, r.ExpiresIn).Err(); nil != err {
+	if err := r.Client.Set(key, value, r.ExpiresIn).Err(); nil != err {
 		return err
 	}
 	return nil
@@ -53,14 +50,14 @@ func (r redisCache) Get(key string) (string, error) {
 	if nil == r.Client && nil == r.ClusterClient {
 		return "", r.noClient()
 	}
-	return r.Client.Get(r.Context, key).Result()
+	return r.Client.Get(key).Result()
 }
 
 func (r redisCache) IsValid(key string) bool {
 	if nil == r.Client && nil == r.ClusterClient {
 		return false
 	}
-	if value, err := r.Client.Get(r.Context, key).Result(); nil == err && value != "" {
+	if value, err := r.Client.Get(key).Result(); nil == err && value != "" {
 		return true
 	}
 	return false
@@ -72,10 +69,10 @@ func (r redisCache) Clear(key string) error {
 	}
 
 	if nil != r.ClusterClient {
-		return r.ClusterClient.Del(r.Context, key).Err()
+		return r.ClusterClient.Del(key).Err()
 	}
 
-	return r.Client.Del(r.Context, key).Err()
+	return r.Client.Del(key).Err()
 }
 
 func (r redisCache) ClearPrefix(keyPrefix string) error {
@@ -84,17 +81,17 @@ func (r redisCache) ClearPrefix(keyPrefix string) error {
 	}
 
 	if nil != r.ClusterClient {
-		iter := r.ClusterClient.Scan(r.Context, 0, keyPrefix+"*", 0).Iterator()
-		for iter.Next(r.Context) {
-			r.ClusterClient.Del(r.Context, iter.Val())
+		iter := r.ClusterClient.Scan(0, keyPrefix+"*", 0).Iterator()
+		for iter.Next() {
+			r.ClusterClient.Del(iter.Val())
 		}
 
 		return iter.Err()
 	}
 
-	iter := r.Client.Scan(r.Context, 0, keyPrefix+"*", 0).Iterator()
-	for iter.Next(r.Context) {
-		r.Client.Del(r.Context, iter.Val())
+	iter := r.Client.Scan(0, keyPrefix+"*", 0).Iterator()
+	for iter.Next() {
+		r.Client.Del(iter.Val())
 	}
 
 	return iter.Err()
@@ -106,10 +103,10 @@ func (r redisCache) ClearAll() error {
 	}
 
 	if nil != r.ClusterClient {
-		return r.ClusterClient.FlushDB(r.Context).Err()
+		return r.ClusterClient.FlushDb().Err()
 	}
 
-	return r.Client.FlushDB(r.Context).Err()
+	return r.Client.FlushDb().Err()
 }
 
 func (r redisCache) noClient() error {

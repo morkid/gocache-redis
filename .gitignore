@@ -1,0 +1,11 @@
+*
+!.gitlab
+!.gitignore
+!*.go
+!*.md
+!go.mod
+!go.sum
+!go.work
+!go.work.sum
+!/v*/
+!LICENSE

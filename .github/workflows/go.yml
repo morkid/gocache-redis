@@ -4,41 +4,48 @@ on:
   push:
     branches: [ master ]
     paths:
-    - '**.go'
-    - '**.mod'
-    - '**.yml'
-    - '**.sum'
+    - '**/*.go'
+    - '**/go.mod'
+    - '**/go.sum'
+    - 'go.work'
+    - '**/*.yml'
+    - '**/*.yaml'
+    - '.github/**'
   pull_request:
     branches: [ master ]
 
 jobs:
 
   build:
-    name: Build
+    # All versions in this repo use miniredis for offline testing, so no
+    # Redis service container is required.
+    #
+    # Legacy versions (v3, v4, v5) skip go mod tidy because Go 1.24+
+    # auto-bumps their go directive to the current toolchain version.
+    # They are pinned at go 1.16 (matching the parent gocache library)
+    # and only need go test to verify correctness.
+    name: Build (${{ matrix.dir }} — Go ${{ matrix.go-version }})
     runs-on: ubuntu-latest
-    services:
-      # Label used to access the service container
-      redis:
-        # Docker Hub image
-        image: redis
-        # Set health checks to wait until redis has started
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          # Maps port 6379 on service container to the host
-          - 6379:6379
+    strategy:
+      fail-fast: false
+      matrix:
+        dir: [v3, v4, v5, v7, v8]
+        go-version: ['1.21', '1.24']
     steps:
 
-    - name: Set up Go 1.x
-      uses: actions/setup-go@v2
+    - name: Set up Go
+      uses: actions/setup-go@v6
       with:
-        go-version: ^1.13
+        go-version: ${{ matrix.go-version }}
 
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v2
+    - name: Check out code
+      uses: actions/checkout@v4
 
-    - name: Test
-      run: go test -v
+    - name: Test (${{ matrix.dir }}, offline via miniredis)
+      working-directory: ${{ matrix.dir }}
+      run: |
+        if [ "${{ matrix.dir }}" = "v3" ] || [ "${{ matrix.dir }}" = "v4" ] || [ "${{ matrix.dir }}" = "v5" ]; then
+          go test -v ./...
+        else
+          go mod tidy && go test -v ./...
+        fi
