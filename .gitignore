@@ -1,5 +1,5 @@
 *
-!.gitlab
+!.github
 !.gitignore
 !*.go
 !*.md
