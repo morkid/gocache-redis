@@ -61,7 +61,7 @@ go get github.com/morkid/gocache-redis/v3   # for Redis client v3
 
 ## Development
 
-This repository uses a subdirectory-per-version structure. All versions live on the `master` branch. A `go.work` at the root enables developing all versions simultaneously — no `replace` directives needed.
+This repository uses a subdirectory-per-version structure. All versions live on the `master` branch. A `go.work` at the root enables developing all versions simultaneously, no `replace` directives needed.
 
 ### Prerequisites
 

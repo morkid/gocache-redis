@@ -37,14 +37,6 @@ func main() {
 }
 ```
 
-## Testing
-
-Tests use [miniredis](https://github.com/alicebob/miniredis) — no external Redis server required.
-
-```bash
-cd v3 && go test -v ./...
-```
-
 ## License
 
 Published under the [MIT License](../LICENSE).
